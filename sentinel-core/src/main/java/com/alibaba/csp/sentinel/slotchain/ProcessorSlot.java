@@ -5,6 +5,11 @@ import com.alibaba.csp.sentinel.context.Context;
 /**
  * A container of some process and ways of notification when the process is finished.
  *
+ * <p>
+ *     处理完成时某个处理器的容器（槽）和通知方式。
+ * </p>
+ *
+ *
  * @author qinan.qn
  * @author jialiang.linjl
  * @author leyou(lihao)
@@ -13,6 +18,8 @@ public interface ProcessorSlot<T> {
 
     /**
      * Entrance of this slot.
+     * <p>
+     * 进入槽的方法
      *
      * @param context         current {@link Context}
      * @param resourceWrapper current resource
@@ -26,6 +33,8 @@ public interface ProcessorSlot<T> {
 
     /**
      * Means finish of {@link #entry(Context, ResourceWrapper, Object, int, Object...)}.
+     * <p>
+     * 进入后出发进入事件
      *
      * @param context         current {@link Context}
      * @param resourceWrapper current resource
@@ -39,6 +48,8 @@ public interface ProcessorSlot<T> {
 
     /**
      * Exit of this slot.
+     * <p>
+     * 离开（结束）这个槽
      *
      * @param context         current {@link Context}
      * @param resourceWrapper current resource
@@ -49,6 +60,8 @@ public interface ProcessorSlot<T> {
 
     /**
      * Means finish of {@link #exit(Context, ResourceWrapper, int, Object...)}.
+     * <p>
+     * 离开（结束）这个槽触发事件
      *
      * @param context         current {@link Context}
      * @param resourceWrapper current resource
