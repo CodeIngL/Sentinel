@@ -9,6 +9,13 @@ import com.alibaba.csp.sentinel.util.MethodUtil;
 /**
  * Resource wrapper for method invocation.
  *
+ * <p>
+ *     method调用的ResourceWrapper，另外一个是{@link com.alibaba.csp.sentinel.slotchain.MethodResourceWrapper}.仅仅只有这两种方式
+ * </p>
+ * @see com.alibaba.csp.sentinel.Sph#entry(Method)
+ * @see com.alibaba.csp.sentinel.Sph#entry(Method, EntryType)
+ * @see com.alibaba.csp.sentinel.Sph#entry(Method, EntryType, int)
+ * @see com.alibaba.csp.sentinel.Sph#entry(Method, EntryType, int, Object...)
  * @author qinan.qn
  */
 public class MethodResourceWrapper extends ResourceWrapper {
