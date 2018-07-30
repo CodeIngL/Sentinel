@@ -5,6 +5,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Wrapped thread factory for better use.
+ * <p>
+ * 用于产生为线程指定一个名字的ThreadFactory
+ * </p>
+ * <p>
+ * 在监控时能更好的区分线程信息
+ * </p>
  */
 public class NamedThreadFactory implements ThreadFactory {
 
@@ -18,7 +24,7 @@ public class NamedThreadFactory implements ThreadFactory {
         this.daemon = daemon;
         SecurityManager s = System.getSecurityManager();
         group = (s != null) ? s.getThreadGroup() :
-            Thread.currentThread().getThreadGroup();
+                Thread.currentThread().getThreadGroup();
         this.namePrefix = namePrefix;
     }
 
