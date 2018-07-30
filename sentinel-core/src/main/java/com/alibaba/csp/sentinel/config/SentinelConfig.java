@@ -13,6 +13,16 @@ import com.alibaba.csp.sentinel.util.StringUtil;
 /**
  * The universal config of Courier. The config is retrieved from
  * {@code ${user.home}/logs/csp/${appName}.properties} by default.
+ * <p>
+ * <p>
+ * Sentinel的通用性配置。
+ * </p>
+ * <p>
+ * 默认情况下，从{@code ${user.home}/logs/csp/${appName}.properties} 中检索配置。
+ * </p>
+ * <p>
+ * 在触发类加载时，由{@code static}语句引入初始化。
+ * </p>
  *
  * @author leyou
  */
@@ -33,6 +43,13 @@ public class SentinelConfig {
         loadProps();
     }
 
+    /**
+     * 初始化默认的配置
+     * 编码:
+     * 文件大小:
+     * 文件最多数量
+     * 冷启动方式
+     */
     private static void initialize() {
         // Init default properties.
         SentinelConfig.setConfig(CHARSET, "UTF-8");
@@ -58,16 +75,16 @@ public class SentinelConfig {
             fis.close();
 
             for (Object key : fileProps.keySet()) {
-                SentinelConfig.setConfig((String)key, (String)fileProps.get(key));
+                SentinelConfig.setConfig((String) key, (String) fileProps.get(key));
                 try {
-                    String systemValue = System.getProperty((String)key);
+                    String systemValue = System.getProperty((String) key);
                     if (!StringUtil.isEmpty(systemValue)) {
-                        SentinelConfig.setConfig((String)key, systemValue);
+                        SentinelConfig.setConfig((String) key, systemValue);
                     }
                 } catch (Exception e) {
                     RecordLog.info(e.getMessage(), e);
                 }
-                RecordLog.info(key + " value: " + SentinelConfig.getConfig((String)key));
+                RecordLog.info(key + " value: " + SentinelConfig.getConfig((String) key));
             }
 
         } catch (Throwable ioe) {
@@ -114,7 +131,7 @@ public class SentinelConfig {
             return Long.parseLong(props.get(SINGLE_METRIC_FILE_SIZE));
         } catch (Throwable throwable) {
             RecordLog.info("SentinelConfig get singleMetricFileSize fail, use default value: "
-                + DEFAULT_SINGLE_METRIC_FILE_SIZE, throwable);
+                    + DEFAULT_SINGLE_METRIC_FILE_SIZE, throwable);
             return DEFAULT_SINGLE_METRIC_FILE_SIZE;
         }
     }
@@ -124,7 +141,7 @@ public class SentinelConfig {
             return Integer.parseInt(props.get(TOTAL_METRIC_FILE_COUNT));
         } catch (Throwable throwable) {
             RecordLog.info("SentinelConfig get totalMetricFileCount fail, use default value: "
-                + DEFAULT_TOTAL_METRIC_FILE_COUNT, throwable);
+                    + DEFAULT_TOTAL_METRIC_FILE_COUNT, throwable);
             return DEFAULT_TOTAL_METRIC_FILE_COUNT;
         }
     }
