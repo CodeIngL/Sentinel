@@ -25,6 +25,13 @@ import com.alibaba.csp.sentinel.slotchain.StringResourceWrapper;
  * One resource has only one cluster node, while one resource can have multiple
  * default node.
  * </p>
+ * <p>
+ * <p>
+ * 此插槽维护resource运行统计信息（响应时间，qps，线程计数，异常）以及由{@link ContextUtil#enter(String origin)}标记的调用者列表
+ * </p>
+ * <p>
+ * 一个resource只有一个cluster node，而一个resource可以有多个默认default node。
+ * </p>
  *
  * @author jialiang.linjl
  */
@@ -48,9 +55,19 @@ public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode>
      * at the very beginning while concurrent map will hold the lock all the
      * time
      * </p>
+     * <p>
+     * 请记住，无论在上下文中，相同的resource({@link ResourceWrapper#equals(Object)}) 将全局共享相同的ProcessorSlotChain。
+     * 因此，如果代码{@link #entry(Context, ResourceWrapper, DefaultNode, int, Object...)}，则resource名称必须相同，但context名称可能不相同。
+     * </p>
+     * <p>
+     * 要获取不同context中相同resource的总统计信息，同一resource将全局共享同一个ClusterNode。 所有ClusterNode都缓存在此映射中。
+     * </p>
+     * <p>
+     * 应用程序运行的时间越长，映射就越稳定。 所以我们不会同时映射而是锁定。 因为这个锁只发生在最开始，而并发映射将始终保持锁
+     * </p>
      */
     private static volatile Map<ResourceWrapper, ClusterNode> clusterNodeMap
-        = new HashMap<ResourceWrapper, ClusterNode>();
+            = new HashMap<ResourceWrapper, ClusterNode>();
 
     private static final Object lock = new Object();
 
@@ -58,11 +75,12 @@ public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode>
 
     @Override
     public void entry(Context context, ResourceWrapper resourceWrapper, DefaultNode node, int count, Object... args)
-        throws Throwable {
-        if (clusterNode == null) {
+            throws Throwable {
+        if (clusterNode == null) { //不存在进行初始化
             synchronized (lock) {
                 if (clusterNode == null) {
                     // Create the cluster node.
+                    // 创建 cluster node.
                     clusterNode = Env.nodeBuilder.buildClusterNode();
                     HashMap<ResourceWrapper, ClusterNode> newMap = new HashMap<ResourceWrapper, ClusterNode>(16);
                     newMap.putAll(clusterNodeMap);
@@ -72,15 +90,18 @@ public class ClusterBuilderSlot extends AbstractLinkedProcessorSlot<DefaultNode>
                 }
             }
         }
+        //为node设置ClusterNode
         node.setClusterNode(clusterNode);
 
         /*
          * if context origin is set, we should get or create a new {@link Node} of
          * the specific origin.
+         * <p>
+         *     将此字符串与指定的对象进行比较。 当且仅当参数不为null并且是表示与此对象相同的字符序列的String对象时，结果才为真。
          */
-        if (!"".equals(context.getOrigin())) {
+        if (!"".equals(context.getOrigin())) { //根据原点进行管理
             Node originNode = node.getClusterNode().getOriginNode(context.getOrigin());
-            context.getCurEntry().setOriginNode(originNode);
+            context.getCurEntry().setOriginNode(originNode); //为当前的entry设置originNode
         }
 
         fireEntry(context, resourceWrapper, node, count, args);
