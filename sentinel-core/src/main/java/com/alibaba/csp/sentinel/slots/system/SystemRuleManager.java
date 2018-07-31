@@ -43,6 +43,19 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
  * Note that {@link SystemRule} only effect on inbound requests, outbound traffic
  * will not limit by {@link SystemRule}
  * </p>
+ * <p>
+ * <p>
+ * Sentinel系统规则使入站流量和容量满足。它将传入请求的平均rt，qps和线程计数考虑在内。它还提供了系统负载的测量，但仅适用于Linux。
+ * <p>
+ * </p>
+ * <p>
+ * rt，qps，线程数很容易理解。如果传入请求的rt，qps，线程数超过其阈值，则会拒绝请求。但是，我们使用不同的方法来计算负载。
+ * </p>
+ * <p> 将系统视为管道，约束之间的转换导致三个不同的区域（交通限制，容量限制和危险区域）具有质量上不同的行为。
+ * 当飞行中没有足够的请求来填充管道时，RTprop确定行为;否则，系统容量占主导地位。约束线在inflight = Capacity×RTprop处相交。
+ * 由于管道在此点之后已满，因此飞行能力过剩会创建一个队列，从而导致RTT对飞行流量​​的线性依赖性和系统负载的增加。在危险区域，系统将停止响应。参考BBR算法了解更多信息。
+ * </p>
+ * 请注意，SystemRule仅对入站请求产生影响，出站流量不受SystemRule限制
  *
  * @author jialiang.linjl
  * @author leyou
@@ -268,7 +281,7 @@ public class SystemRuleManager {
         // 完全按照RT,BBR算法来
         if (highestSystemLoadIsSet && getCurrentSystemAvgLoad() > highestSystemLoad) {
             if (currentThread > 1 &&
-                currentThread > Constants.ENTRY_NODE.maxSuccessQps() * Constants.ENTRY_NODE.minRt() / 1000) {
+                    currentThread > Constants.ENTRY_NODE.maxSuccessQps() * Constants.ENTRY_NODE.minRt() / 1000) {
                 throw new SystemBlockException(resourceWrapper.getName(), "load");
             }
         }
