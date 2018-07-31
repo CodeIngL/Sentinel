@@ -20,6 +20,15 @@ import com.alibaba.csp.sentinel.slots.clusterbuilder.ClusterBuilderSlot;
  *     exceeds the threshold).</li>
  * </ul>
  *
+ * <p>
+ *     每个流规则主要由三个因素组成：等级，策略和控制行为。
+ * </p>
+ * <ul>
+ *     <li>The {@link #grade} 流量控制的阈值类型（通过QPS或线程计数）。</li>
+ *     <li>The {@link #strategy} 代表了基于调用关系的策略。</li>
+ *     <li>The {@link #controlBehavior} 表示QPS整形行为（当QPS超过阈值时对传入请求的操作）。</li>
+ * </ul>
+ *
  * @author jialiang.linjl
  * @author Eric Zhao
  */
@@ -224,7 +233,7 @@ public class FlowRule extends AbstractRule {
             return false;
         }
 
-        FlowRule flowRule = (FlowRule)o;
+        FlowRule flowRule = (FlowRule) o;
 
         if (grade != flowRule.grade) {
             return false;
@@ -255,10 +264,10 @@ public class FlowRule extends AbstractRule {
         long temp;
         result = 31 * result + grade;
         temp = Double.doubleToLongBits(count);
-        result = 31 * result + (int)(temp ^ (temp >>> 32));
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + strategy;
         result = 31 * result + (refResource != null ? refResource.hashCode() : 0);
-        result = 31 * result + (int)(temp ^ (temp >>> 32));
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + warmUpPeriodSec;
         result = 31 * result + controlBehavior;
         return result;
@@ -267,16 +276,16 @@ public class FlowRule extends AbstractRule {
     @Override
     public String toString() {
         return "FlowRule{" +
-            "resource=" + getResource() +
-            ", limitApp=" + getLimitApp() +
-            ", grade=" + grade +
-            ", count=" + count +
-            ", strategy=" + strategy +
-            ", refResource=" + refResource +
-            ", controlBehavior=" + controlBehavior +
-            ", warmUpPeriodSec=" + warmUpPeriodSec +
-            ", maxQueueingTimeMs=" + maxQueueingTimeMs +
-            ", controller=" + controller +
-            "}";
+                "resource=" + getResource() +
+                ", limitApp=" + getLimitApp() +
+                ", grade=" + grade +
+                ", count=" + count +
+                ", strategy=" + strategy +
+                ", refResource=" + refResource +
+                ", controlBehavior=" + controlBehavior +
+                ", warmUpPeriodSec=" + warmUpPeriodSec +
+                ", maxQueueingTimeMs=" + maxQueueingTimeMs +
+                ", controller=" + controller +
+                "}";
     }
 }
