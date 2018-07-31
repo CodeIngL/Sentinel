@@ -3,6 +3,9 @@ package com.alibaba.csp.sentinel.transport;
 /**
  * Heartbeat interface. Sentinel core is responsible for invoking {@link #sendHeartbeat()}
  * at every {@link #intervalMs()} interval.
+ * <p>
+ * 心跳接口。 Sentinel核心负责在每个{@link #intervalMs()}间隔调用{@link #sendHeartbeat()}。
+ * </p>
  *
  * @author leyou
  * @author Eric Zhao
