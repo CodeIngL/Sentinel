@@ -2,17 +2,26 @@ package com.alibaba.csp.sentinel.slots.statistic.base;
 
 /**
  * Represents metrics data in a period of time window.
+ * <p>
+ * 表示时间窗口中的一段度量数据。
+ * </p>
  *
  * @author jialiang.linjl
  * @author Eric Zhao
  */
 public class Window {
 
+    //通过
     private final LongAdder pass = new LongAdder();
+    //阻塞
     private final LongAdder block = new LongAdder();
+    //异常
     private final LongAdder exception = new LongAdder();
+    //rt
     private final LongAdder rt = new LongAdder();
+    //成功
     private final LongAdder success = new LongAdder();
+    //最小rt
     private final LongAdder minRt = new LongAdder();
 
     public Window() {

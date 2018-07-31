@@ -9,6 +9,7 @@ import com.alibaba.csp.sentinel.slots.statistic.base.WindowWrap;
 
 /**
  * The basic metric class in Sentinel using a {@link WindowLeapArray} internal.
+ * <p>使用WindowLeapArray内部的Sentinel中的基本度量标准类。</p>
  *
  * @author jialiang.linjl
  * @author Eric Zhao
@@ -17,12 +18,18 @@ public class ArrayMetric implements Metric {
 
     private final WindowLeapArray data;
 
+    /**
+     * 窗口长度，间隔数
+     * @param windowLength
+     * @param interval
+     */
     public ArrayMetric(int windowLength, int interval) {
         this.data = new WindowLeapArray(windowLength, interval);
     }
 
     /**
      * For unit test.
+     * 为了单元测试
      */
     public ArrayMetric(WindowLeapArray array) {
         this.data = array;
@@ -183,7 +190,7 @@ public class ArrayMetric implements Metric {
         for (WindowWrap<Window> windowWrap : data.list()) {
 
             sb.append(windowWrap.windowStart()).append(":").append(windowWrap.value().pass()).append(":")
-                .append(windowWrap.value().block());
+                    .append(windowWrap.value().block());
             sb.append(",");
 
         }

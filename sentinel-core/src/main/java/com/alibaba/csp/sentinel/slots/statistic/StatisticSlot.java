@@ -22,6 +22,16 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
  * <li> Finally, the sum statistics of all entrances.</li>
  * </ul>
  * </p>
+ * <p>
+ * <p>
+ * 专用于实时统计的处理器插槽。 进入此插槽时，我们需要单独计算以下信息：
+ * <ul>
+ * <li>{@link ClusterNode}: resource id的cluster node的总统计信息 </li>
+ * <li> origin node: 来自不同callers/origins的cluster node的统计信息. </li>
+ * <li> {@link DefaultNode}: 特定上下文中特定resource name的统计信息。.
+ * <li> 最后，所有entrances的总和统计</li>
+ * </ul>
+ * </p>
  *
  * @author jialiang.linjl
  */
@@ -29,7 +39,7 @@ public class StatisticSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
 
     @Override
     public void entry(Context context, ResourceWrapper resourceWrapper, DefaultNode node, int count, Object... args)
-        throws Throwable {
+            throws Throwable {
 
         try {
             fireEntry(context, resourceWrapper, node, count, args);
@@ -78,7 +88,7 @@ public class StatisticSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
 
     @Override
     public void exit(Context context, ResourceWrapper resourceWrapper, int count, Object... args) {
-        DefaultNode node = (DefaultNode)context.getCurNode();
+        DefaultNode node = (DefaultNode) context.getCurNode();
 
         if (context.getCurEntry().getError() == null) {
             long rt = TimeUtil.currentTimeMillis() - context.getCurEntry().getCreateTime();
