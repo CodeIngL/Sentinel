@@ -3,6 +3,8 @@ package com.alibaba.csp.sentinel.node;
 import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
 
 /**
+ * 默认的DefaultNode构建器
+ * 用于构建DefaultNode
  * @author qinan.qn
  */
 public class DefaultNodeBuilder implements NodeBuilder {

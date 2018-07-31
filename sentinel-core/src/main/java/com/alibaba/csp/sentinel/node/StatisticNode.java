@@ -11,18 +11,34 @@ import com.alibaba.csp.sentinel.slots.statistic.metric.ArrayMetric;
 import com.alibaba.csp.sentinel.slots.statistic.metric.Metric;
 
 /**
+ * <p>
+ * 带统计信息的node
+ * </p>
+ *
  * @author qinan.qn
  * @author jialiang.linjl
  */
 public class StatisticNode implements Node {
 
+    /**
+     * 秒s监控
+     */
     private transient Metric rollingCounterInSecond = new ArrayMetric(1000 / SampleCountProperty.sampleCount,
-        IntervalProperty.INTERVAL);
+            IntervalProperty.INTERVAL);
 
+    /**
+     * 分钟监控
+     */
     private transient Metric rollingCounterInMinute = new ArrayMetric(1000, 2 * 60);
 
+    /**
+     * 当前的线程数
+     */
     private AtomicInteger curThreadNum = new AtomicInteger(0);
 
+    /**
+     * 上一次抓取时间
+     */
     private long lastFetchTime = -1;
 
     @Override
@@ -43,6 +59,9 @@ public class StatisticNode implements Node {
         return metrics;
     }
 
+    /**
+     * 重置
+     */
     @Override
     public void reset() {
         rollingCounterInSecond = new ArrayMetric(1000 / SampleCountProperty.sampleCount, IntervalProperty.INTERVAL);

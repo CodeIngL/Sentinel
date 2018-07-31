@@ -16,6 +16,15 @@ import com.alibaba.csp.sentinel.slots.nodeselector.NodeSelectorSlot;
  * current context does't have one. Note that same context name will share same {@link EntranceNode}
  * globally.
  * </p>
+ * <p>
+ * <p>
+ * {@link Node}表示调用树的入口。
+ * </p>
+ * <p>
+ * 一个{@link Context}将与{@link EntranceNode}相关，该EntryNode表示调用树的入口。
+ * 如果当前上下文没有，则将创建新的EntranceNode。 请注意，相同的上下文名称将全局共享相同的EntranceNode。
+ * <p>
+ * </p>
  *
  * @author qinan.qn
  * @see ContextUtil

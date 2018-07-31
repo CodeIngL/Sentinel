@@ -40,11 +40,16 @@ public class ClusterNode extends StatisticNode {
     /**
      * Get {@link Node} of the specific origin. Usually the origin is the Service Consumer's app name.
      *
+     * <p>
+     *     获取特定原点的{@link Node}。 通常，原点是服务消费者的应用程序名称。
+     * </p>
+     *
      * @param origin The caller's name. It is declared in the
      *               {@link ContextUtil#enter(String name, String origin)}.
      * @return the {@link Node} of the specific origin.
      */
     public Node getOriginNode(String origin) {
+        //不存在则构建，存在则获得
         StatisticNode statisticNode = originCountMap.get(origin);
         if (statisticNode == null) {
             try {
