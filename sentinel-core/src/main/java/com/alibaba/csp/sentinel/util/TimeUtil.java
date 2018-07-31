@@ -4,6 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Provides millisecond-level time of OS.
+ * <p>
+ * 提供毫秒级的OS时间。
+ * </p>
  *
  * @author qinan.qn
  */
