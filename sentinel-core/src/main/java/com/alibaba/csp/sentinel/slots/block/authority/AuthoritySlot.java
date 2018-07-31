@@ -9,6 +9,14 @@ import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
 /**
  * A {@link ProcessorSlot} that dedicates to {@link AuthorityRule} checking.
  *
+ * <p>
+ *     一个专用于{@link AuthorityRule}检查的ProcessorSlot。
+ * </p>
+ *
+ * <p>
+ *     通过一个全局的权限管理器(AuthorityRuleManager来共享配置)
+ * </p>
+ *
  * @author leyou
  */
 public class AuthoritySlot extends AbstractLinkedProcessorSlot<DefaultNode> {

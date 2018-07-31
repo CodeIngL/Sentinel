@@ -51,17 +51,27 @@ public class AuthorityRuleManager {
         currentProperty.updateValue(rules);
     }
 
+    /**
+     * 校验
+     * @param resource
+     * @param context
+     * @param node
+     * @param count
+     * @throws BlockException
+     */
     public static void checkAuthority(ResourceWrapper resource, Context context, DefaultNode node, int count)
         throws BlockException {
         if (authorityRules == null) {
             return;
         }
 
+        //获得资源对应的权限
         List<AuthorityRule> rules = authorityRules.get(resource.getName());
         if (rules == null) {
             return;
         }
 
+        //遍历权限，所用权限都需要通过
         for (AuthorityRule rule : rules) {
             if (!rule.passCheck(context, node, count)) {
                 throw new AuthorityException(context.getOrigin());
