@@ -33,6 +33,16 @@ import com.alibaba.csp.sentinel.slots.clusterbuilder.ClusterBuilderSlot;
  * the coming window.
  * </li>
  * </ul>
+ * <p>
+ * <p>
+ * 当资源处于不稳定状态时使用降级，这些资源将在下一个定义的时间窗口内降级。 有两种方法可以衡量资源是否稳定：
+ * </p>
+ * <p>
+ * 平均响应时间（DEGRADE_GRADE_RT）：当平均RT超过阈值（'DegradeRule'中的'count'，以毫秒为单位）时，资源进入准降级状态。 如果下一个5个请求的RT仍然超过此阈值，则此资源将被降级，这意味着在下一个时间窗口（在'timeWindow'中定义，以秒为单位）将阻止对该资源的所有访问。
+ * </p>
+ * <p>
+ * 异常率：当每秒异常计数与成功qps的比率超过阈值时，将在下一个窗口中阻止对资源的访问。
+ * </p>
  *
  * @author jialiang.linjl
  */
@@ -41,7 +51,7 @@ public class DegradeRule extends AbstractRule {
     private static final int RT_MAX_EXCEED_N = 5;
 
     private static ScheduledExecutorService pool = Executors.newScheduledThreadPool(
-        Runtime.getRuntime().availableProcessors());
+            Runtime.getRuntime().availableProcessors());
 
     /**
      * RT threshold or exception ratio threshold count.
@@ -116,7 +126,7 @@ public class DegradeRule extends AbstractRule {
             return false;
         }
 
-        DegradeRule that = (DegradeRule)o;
+        DegradeRule that = (DegradeRule) o;
 
         if (count != that.count) {
             return false;
@@ -197,12 +207,12 @@ public class DegradeRule extends AbstractRule {
     @Override
     public String toString() {
         return "DegradeRule{" +
-            "resource=" + getResource() +
-            ", grade=" + grade +
-            ", count=" + count +
-            ", limitApp=" + getLimitApp() +
-            ", timeWindow=" + timeWindow +
-            "}";
+                "resource=" + getResource() +
+                ", grade=" + grade +
+                ", count=" + count +
+                ", limitApp=" + getLimitApp() +
+                ", timeWindow=" + timeWindow +
+                "}";
     }
 
     private static final class ResetTask implements Runnable {
