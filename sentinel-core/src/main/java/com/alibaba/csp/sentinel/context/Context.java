@@ -10,7 +10,7 @@ import com.alibaba.csp.sentinel.slots.nodeselector.NodeSelectorSlot;
 
 /**
  * This class holds metadata of current invocation:<br/>
- *
+ * <p>
  * <ul>
  * <li>the {@link EntranceNode}: the root of the current invocation
  * tree.</li>
@@ -31,6 +31,25 @@ import com.alibaba.csp.sentinel.slots.nodeselector.NodeSelectorSlot;
  * <p>
  * Same resource in different context will count separately, see {@link NodeSelectorSlot}.
  * </p>
+ * <p>
+ * <p>
+ * 该类包含当前调用的元数据：
+ * <ul>
+ * <li>the {@link EntranceNode}: 当前调用树的root。</li>
+ * <li>the 当前{@link Entry}: 当前的调用点.</li>
+ * <li>the 当前{@link Node}: 与{@link Entry}相关的统计信息.</li>
+ * <li>the origin:当我们想要分别控制不同的调用者/消费者时，原点是有用的。 通常，原点可以是服务消费者的应用名称。</li>
+ * </ul>
+ * <p>
+ * <p>
+ * 每个{@link SphU}#entry()或{@link SphO}#entry()应该在{@link Context}中，如果我们没有显式调用{@link ContextUtil}#enter() ，将使用DEFAULT context。
+ * <p>
+ * 如果我们在同一个上下文中多次调用{@link SphU}#entry()，将创建一个调用树。
+ * </p>
+ * <p>
+ * <p>
+ * 不同上下文中的相同资源将单独计数，请参阅{@link NodeSelectorSlot}.
+ * </p>
  *
  * @author jialiang.linjl
  * @author leyou(lihao)
@@ -42,16 +61,21 @@ public class Context {
 
     /**
      * Context name.
+     * 上下文的名字
      */
     private String name;
 
     /**
      * The entrance node of current invocation tree.
+     * 当前调用树的entrance node
+     * @see EntranceNode
      */
     private DefaultNode entranceNode;
 
     /**
      * Current processing entry.
+     * 当前处理的Entry
+     * @see com.alibaba.csp.sentinel.CtSph.CtEntry
      */
     private Entry curEntry;
 
@@ -136,7 +160,7 @@ public class Context {
      * @return the parent node of the current.
      */
     public Node getLastNode() {
-        if (curEntry != null && curEntry.getLastNode() != null) {
+        if (curEntry != null && curEntry.getLastNode() != null) { //存在当前的entry使用entry的node
             return curEntry.getLastNode();
         } else {
             return entranceNode;
