@@ -17,18 +17,18 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
  * surrounded by an entry. The requests to this resource will be blocked if any
  * criteria is met, eg. when any {@link Rule}'s threshold is exceeded. Once blocked,
  * {@link SphU}#enter() will return false.
- *
+ * <p>
  * <p>
  * To configure the criteria, we can use <code>XXXRuleManager.loadRules()</code> to add rules. eg.
  * {@link FlowRuleManager#loadRules(List)}, {@link DegradeRuleManager#loadRules(List)},
  * {@link SystemRuleManager#loadRules(List)}.
  * </p>
- *
+ * <p>
  * <p>
  * Following code is an example. {@code "abc"} represent a unique name for the
  * protected resource:
  * </p>
- *
+ * <p>
  * <pre>
  * public void foo() {
  *    if (SphO.entry("abc")) {
@@ -42,9 +42,36 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
  *    }
  * }
  * </pre>
- *
+ * <p>
  * Make sure {@code SphO.entry()} and {@link SphO#exit()} be paired in the same thread,
  * otherwise {@link ErrorEntryFreeException} will be thrown.
+ * <p>
+ * <p>
+ * 从概念上讲，需要保护的物理或逻辑resource应该由entry包围。
+ * 如果满足任何criteria，将阻止对此资源的请求，例如。 何时超过任何{@link Rule}'s的阈值。
+ * 一旦被阻止，{@link SphU}#enter()将返回false。
+ * </p>
+ * <p>
+ * 要配置criteria，我们可以使用<code>XXXRuleManager.loadRules()</code> 来添加规则，例如。
+ * {@link FlowRuleManager#loadRules(List)}, {@link DegradeRuleManager#loadRules(List)},
+ * {@link SystemRuleManager#loadRules(List)}.
+ * </p>
+ * <p>
+ * 以下代码是一个示例，“abc”表示受保护resource的唯一名称
+ * </p>
+ * <pre>
+ * public void foo() {
+ *    if (SphO.entry("abc")) {
+ *        try {
+ *            // business logic
+ *        } finally {
+ *            SphO.exit(); // must exit()
+ *        }
+ *    } else {
+ *        // failed to enter the protected resource.
+ *    }
+ * }
+ * </pre>
  *
  * @author jialiang.linjl
  * @author leyou

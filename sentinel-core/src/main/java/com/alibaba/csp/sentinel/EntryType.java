@@ -3,6 +3,10 @@ package com.alibaba.csp.sentinel;
 /**
  * An enum marks resource invocation direction.
  *
+ * <p>
+ *     enum标记资源调用方向。
+ * </p>
+ *
  * @author jialiang.linjl
  */
 public enum EntryType {

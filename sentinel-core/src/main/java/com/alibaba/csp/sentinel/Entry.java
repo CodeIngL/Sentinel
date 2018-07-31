@@ -8,7 +8,7 @@ import com.alibaba.csp.sentinel.context.Context;
 
 /**
  * Each {@link SphU}#entry() will return an {@link Entry}. This class holds information of current invocation:<br/>
- *
+ * <p>
  * <ul>
  * <li>createTime, the create time of this entry, using for rt statistics.</li>
  * <li>current {@link Node}, that is statistics of the resource in current context.</li>
@@ -18,12 +18,27 @@ import com.alibaba.csp.sentinel.context.Context;
  * <li>{@link ResourceWrapper}, that is resource name.</li>
  * <br/>
  * </ul>
- *
+ * <p>
  * <p>
  * A invocation tree will be created if we invoke SphU#entry() multi times in the same {@link Context},
  * so parent or child entry may be held by this to form the tree. Since {@link Context} always holds
  * the current entry in the invocation tree, every {@link Entry#exit()} call should modify
  * {@link Context#setCurEntry(Entry)} as parent entry of this.
+ * </p>
+ * <p>
+ * <p>
+ * 每个{@link SphU}#entry()都将返回一个 {@link Entry}。 该类包含当前调用的信息：
+ * <ul>
+ * <li>createTime, 此entry的创建时间，用于rt统计信息.</li>
+ * <li>current {@link Node}, 即当前上下文中resource的统计信息</li>
+ * <li>origin {@link Node}, 即特定原点的统计信息。 通常原点可能是Service Consumer的应用程序名称，请参阅{@link ContextUtil#enter(String name, String origin)}</li>
+ * <li>{@link ResourceWrapper}, 即资源名称</li>
+ * <br/>
+ * </ul>
+ * </p>
+ * <p>
+ * 如果我们在同一个{@link Context},中多次调用{@link SphU}#entry()，则会创建一个调用树，因此可以通过它来保存父或子条目以形成树。
+ * 由于{@link Context}始终保持调用树中的当前entry，因此每个{@link Entry#exit()} 调用都应将{@link Context#setCurEntry(Entry)} 修改为此entry的父entry。
  * </p>
  *
  * @author qinan.qn

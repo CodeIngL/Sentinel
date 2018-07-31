@@ -9,6 +9,10 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 /**
  * This class is used to record other exception except block exception.
  *
+ * <p>
+ *     此类用于记录除block exception之外的其他异常。
+ * </p>
+ *
  * @author jialiang.linjl
  */
 public final class Tracer {

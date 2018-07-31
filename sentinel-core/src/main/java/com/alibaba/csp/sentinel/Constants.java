@@ -18,6 +18,7 @@ public class Constants {
     public final static String ROOT_ID = "machine-root";
     public final static String CONTEXT_DEFAULT_NAME = "default_context_name";
 
+    //应用的root节点
     public final static DefaultNode ROOT = new EntranceNode(new StringResourceWrapper(ROOT_ID, EntryType.IN),
         Env.nodeBuilder.buildClusterNode());
 
