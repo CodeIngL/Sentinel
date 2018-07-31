@@ -13,6 +13,9 @@ import com.alibaba.csp.sentinel.transport.config.TransportConfig;
 
 /**
  * Global init function for heartbeat sender.
+ * <p>
+ * 心跳发送器的全局初始化函数功能。
+ * </p>
  *
  * @author Eric Zhao
  */
@@ -29,11 +32,12 @@ public class HeartbeatSenderInitFunc implements InitFunc {
         } catch (Exception ex) {
             RecordLog.info("Parse heartbeat interval failed, use that in code, " + ex.getMessage());
         }
+        //spi查找HeartbeatSender的实现
         ServiceLoader<HeartbeatSender> loader = ServiceLoader.load(HeartbeatSender.class);
         Iterator<HeartbeatSender> iterator = loader.iterator();
         if (iterator.hasNext()) {
             final HeartbeatSender sender = iterator.next();
-            if (iterator.hasNext()) {
+            if (iterator.hasNext()) { //仅仅有一个实现
                 throw new IllegalStateException("Only single heartbeat sender can be scheduled");
             } else {
                 long interval = sender.intervalMs();
@@ -52,7 +56,7 @@ public class HeartbeatSenderInitFunc implements InitFunc {
                     }
                 }, 10000, interval, TimeUnit.MILLISECONDS);
                 RecordLog.info("[HeartbeatSenderInit] HeartbeatSender started: "
-                    + sender.getClass().getCanonicalName());
+                        + sender.getClass().getCanonicalName());
             }
         }
     }
