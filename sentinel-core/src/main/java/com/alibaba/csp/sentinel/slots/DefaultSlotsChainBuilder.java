@@ -13,6 +13,26 @@ import com.alibaba.csp.sentinel.slots.system.SystemSlot;
 
 /**
  * Helper class to create {@link ProcessorSlotChain}.
+ * <p>
+ * <p>
+ * 创建{@link ProcessorSlotChain}的工具类，默认带上所有的插槽。
+ * </p>
+ * <p>
+ * 你可以添加额外的插槽。
+ * </p>
+ * <p>
+ * <p>
+ * 插槽方向
+ * </p>
+ * <p>
+ * {@link NodeSelectorSlot}===>
+ * {@link ClusterBuilderSlot}===>
+ * {@link LogSlot}===>
+ * {@link StatisticSlot}===>
+ * {@link AuthoritySlot}===>
+ * {@link FlowSlot}===>
+ * {@link DegradeSlot}
+ * </p>
  *
  * @author qinan.qn
  * @author leyou
