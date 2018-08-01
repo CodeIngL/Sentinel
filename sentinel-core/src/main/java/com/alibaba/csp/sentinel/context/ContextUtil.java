@@ -21,6 +21,13 @@ import com.alibaba.csp.sentinel.slots.nodeselector.NodeSelectorSlot;
  * Each {@link SphU}#entry() or {@link SphO}#entry() should be in a {@link Context}.
  * If we don't invoke {@link ContextUtil}#enter() explicitly, DEFAULT context will be used.
  * </p>
+ * <p>
+ * <p>
+ * 用于在当前线程中获取或创建Context的实用程序类。
+ * </p>
+ * <p>
+ * 每个{@link SphU}#entry()或{@link SphO}#entry()都应该在{@link Context}.中。 如果我们不显式调用{@link ContextUtil}#enter()，将使用DEFAULT上下文。
+ * </p>
  *
  * @author jialiang.linjl
  * @author leyou(lihao)
@@ -84,7 +91,8 @@ public class ContextUtil {
      * @param name   the context name.
      * @param origin the origin of this invocation, usually the origin could be the Service
      *               Consumer's app name. The origin is useful when we want to control different
-     *               invoker/consumer separately.
+     *               invoker/consumer separately. 这个调用的来源，通常可能是服务消费者的应用程序名称。
+     *               当我们想要分别控制不同的调用者/消费者时，原点很有用。
      * @return The invocation context of the current thread.
      */
     static public Context enter(String name, String origin) {
