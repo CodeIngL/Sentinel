@@ -81,6 +81,10 @@ public abstract class Entry {
     /**
      * Exit this entry. This method should invoke if and only if once at the end of the resource protection.
      *
+     * <p>
+     *     退出此entry。 当且仅当resource保护结束时才调用此方法。
+     * </p>
+     *
      * @param count tokens to release.
      * @param args
      * @throws ErrorEntryFreeException, if {@link Context#getCurEntry()} is not this entry.
@@ -89,6 +93,7 @@ public abstract class Entry {
 
     /**
      * Exit this entry.
+     * 真正的执行entry的Exit
      *
      * @param count tokens to release.
      * @param args

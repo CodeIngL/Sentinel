@@ -18,7 +18,12 @@ public class Constants {
     public final static String ROOT_ID = "machine-root";
     public final static String CONTEXT_DEFAULT_NAME = "default_context_name";
 
-    //应用的root节点
+    /**
+     * 应用的root节点
+     * <p>
+     *    root本质上是一个EntranceNode节点。位于整个调用树的顶端，名字为machine-root，方向是流入方向
+     * </p>
+     */
     public final static DefaultNode ROOT = new EntranceNode(new StringResourceWrapper(ROOT_ID, EntryType.IN),
         Env.nodeBuilder.buildClusterNode());
 

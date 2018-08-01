@@ -20,6 +20,16 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
  * origin.<br/>
  * Note that 'origin' usually is Service Consumer's app name.
  * </p>
+ * <p>
+ * <p>
+ * 此类存储资源的摘要运行时统计信息，包括rt，线程计数，qps等。
+ * 无论是 {@link com.alibaba.csp.sentinel.context.Context}，同一资源都在全局共享同一个{@link ClusterNode}。
+ * </p>
+ * <p>
+ * 为区分不同来源的调用（在{@link ContextUtil#enter(String name, String origin)}中声明），
+ * 一个{@link ClusterNode}包含{@link #originCountMap}，此映射包含不同origin的StatisticNode。 使用{@link #getOriginNode(String)} 获取特定"origin"的{@link Node}。
+ * 请注意，"origin"通常是Service Consumer的应用程序名称。
+ * </p>
  *
  * @author qinan.qn
  * @author jialiang.linjl
@@ -39,9 +49,9 @@ public class ClusterNode extends StatisticNode {
 
     /**
      * Get {@link Node} of the specific origin. Usually the origin is the Service Consumer's app name.
-     *
      * <p>
-     *     获取特定原点的{@link Node}。 通常，原点是服务消费者的应用程序名称。
+     * <p>
+     * 获取特定原点的{@link Node}。 通常，原点是服务消费者的应用程序名称。
      * </p>
      *
      * @param origin The caller's name. It is declared in the
@@ -58,7 +68,7 @@ public class ClusterNode extends StatisticNode {
                 if (statisticNode == null) {
                     statisticNode = new StatisticNode();
                     HashMap<String, StatisticNode> newMap = new HashMap<String, StatisticNode>(
-                        originCountMap.size() + 1);
+                            originCountMap.size() + 1);
                     newMap.putAll(originCountMap);
                     newMap.put(origin, statisticNode);
                     originCountMap = newMap;

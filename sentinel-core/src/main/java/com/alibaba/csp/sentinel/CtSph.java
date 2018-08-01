@@ -165,11 +165,17 @@ public class CtSph implements Sph {
         private ProcessorSlot<Object> chain;
         private Context context;
 
+        /**
+         * entry的默认实现，唯一的实现方式
+         * @param resourceWrapper 资源
+         * @param chain 处理链
+         * @param context 上下文
+         */
         CtEntry(ResourceWrapper resourceWrapper, ProcessorSlot<Object> chain, Context context) {
             super(resourceWrapper);
             this.chain = chain;
             this.context = context;
-            parent = context.getCurEntry(); //获得上下文当前的entry作为自己的parent
+            parent = context.getCurEntry(); //获得上下文当前的entry作为自己的parent，可能为空，可能存在
             if (parent != null) {
                 ((CtEntry) parent).child = this;
             }
@@ -184,8 +190,9 @@ public class CtSph implements Sph {
         @Override
         protected Entry trueExit(int count, Object... args) throws ErrorEntryFreeException {
             if (context != null) {
-                if (context.getCurEntry() != this) {
+                if (context.getCurEntry() != this) { //如果当前的entry和this不相同
                     // Clean previous call stack.
+                    // 清理前一个调用堆栈。
                     CtEntry e = (CtEntry) context.getCurEntry();
                     while (e != null) {
                         e.exit(count, args);
@@ -198,15 +205,18 @@ public class CtSph implements Sph {
                         chain.exit(context, resourceWrapper, count, args);
                     }
                     // Modify the call stack.
+                    // 修改调用堆栈。
                     context.setCurEntry(parent);
                     if (parent != null) {
                         ((CtEntry) parent).child = null;
                     }
                     if (parent == null) {
                         // Auto-created entry indicates immediate exit.
+                        // 自动创建的entry表示立即退出。
                         ContextUtil.exit();
                     }
                     // Clean the reference of context in current entry to avoid duplicate exit.
+                    // 清除当前entry中的上下文引用以避免重复退出。
                     context = null;
                 }
             }
