@@ -157,19 +157,35 @@ public class CtSph implements Sph {
 
     /**
      * Entry的默认实现
+     * <p>
+     * 对于任意一个Entry他都有所属的Context，这决定他从属于哪一个Context
+     * </p>
      */
     private static class CtEntry extends Entry {
 
+        /**
+         * Context下上级节点。
+         */
         protected Entry parent = null;
+        /**
+         * 对this来说，为本级节点
+         */
         protected Entry child = null;
+        /**
+         * 处理器
+         */
         private ProcessorSlot<Object> chain;
+        /**
+         * 所属的上下文
+         */
         private Context context;
 
         /**
          * entry的默认实现，唯一的实现方式
+         *
          * @param resourceWrapper 资源
-         * @param chain 处理链
-         * @param context 上下文
+         * @param chain           处理链
+         * @param context         上下文
          */
         CtEntry(ResourceWrapper resourceWrapper, ProcessorSlot<Object> chain, Context context) {
             super(resourceWrapper);

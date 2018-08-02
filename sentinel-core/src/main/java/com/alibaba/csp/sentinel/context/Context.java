@@ -67,7 +67,10 @@ public class Context {
 
     /**
      * The entrance node of current invocation tree.
-     * 当前调用树的entrance node
+     * 当前调用树的entrance node。
+     * 这是一个特殊的entranceNode，他和Context进行绑定，对于Context而言，他是顶层的Node。
+     * 对应用而言他是根ROOT的node的直接子节点。
+     *
      * @see EntranceNode
      */
     private DefaultNode entranceNode;
@@ -75,6 +78,7 @@ public class Context {
     /**
      * Current processing entry.
      * 当前处理的Entry
+     *
      * @see com.alibaba.csp.sentinel.CtSph.CtEntry
      */
     private Entry curEntry;

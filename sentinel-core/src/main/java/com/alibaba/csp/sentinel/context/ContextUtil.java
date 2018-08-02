@@ -46,6 +46,7 @@ public class ContextUtil {
     /**
      * Holds all {@link EntranceNode}
      * <p>持有所有的{@link EntranceNode}</p>
+     * 该结构，使用{@link EntranceNode}来表示一个Resource对应的资源，因而key值就是Resource的标识。可能在不同的Context进行共享
      */
     private static volatile Map<String, DefaultNode> contextNameNodeMap = new HashMap<String, DefaultNode>();
 
