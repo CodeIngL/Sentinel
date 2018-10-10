@@ -198,14 +198,27 @@ public class CtSph implements Sph {
             context.setCurEntry(this);//设置当前的上文的entry为自己
         }
 
+        /**
+         * 退出
+         * @param count tokens to release.
+         * @param args
+         * @throws ErrorEntryFreeException
+         */
         @Override
         public void exit(int count, Object... args) throws ErrorEntryFreeException {
             trueExit(count, args);
         }
 
+        /**
+         * 真正的退出
+         * @param count tokens to release.
+         * @param args
+         * @return
+         * @throws ErrorEntryFreeException
+         */
         @Override
         protected Entry trueExit(int count, Object... args) throws ErrorEntryFreeException {
-            if (context != null) {
+            if (context != null) { //存在context
                 if (context.getCurEntry() != this) { //如果当前的entry和this不相同
                     // Clean previous call stack.
                     // 清理前一个调用堆栈。
@@ -223,17 +236,17 @@ public class CtSph implements Sph {
                     // Modify the call stack.
                     // 修改调用堆栈。
                     context.setCurEntry(parent);
-                    if (parent != null) {
+                    if (parent != null) { //清除下一层
                         ((CtEntry) parent).child = null;
                     }
-                    if (parent == null) {
+                    if (parent == null) { //堆栈退出到顶层了
                         // Auto-created entry indicates immediate exit.
                         // 自动创建的entry表示立即退出。
                         ContextUtil.exit();
                     }
                     // Clean the reference of context in current entry to avoid duplicate exit.
                     // 清除当前entry中的上下文引用以避免重复退出。
-                    context = null;
+                    context = null; //解除引用
                 }
             }
             return parent;

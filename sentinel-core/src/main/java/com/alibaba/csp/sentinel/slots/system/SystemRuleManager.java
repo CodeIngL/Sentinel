@@ -53,7 +53,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
  * </p>
  * <p> 将系统视为管道，约束之间的转换导致三个不同的区域（交通限制，容量限制和危险区域）具有质量上不同的行为。
  * 当飞行中没有足够的请求来填充管道时，RTprop确定行为;否则，系统容量占主导地位。约束线在inflight = Capacity×RTprop处相交。
- * 由于管道在此点之后已满，因此飞行能力过剩会创建一个队列，从而导致RTT对飞行流量​​的线性依赖性和系统负载的增加。在危险区域，系统将停止响应。参考BBR算法了解更多信息。
+     * 由于管道在此点之后已满，因此飞行能力过剩会创建一个队列，从而导致RTT对飞行流量​​的线性依赖性和系统负载的增加。在危险区域，系统将停止响应。参考BBR算法了解更多信息。
  * </p>
  * 请注意，SystemRule仅对入站请求产生影响，出站流量不受SystemRule限制
  *
@@ -257,22 +257,26 @@ public class SystemRuleManager {
         }
 
         // for inbound traffic only
+        // 仅处理入站方向
         if (resourceWrapper.getType() != EntryType.IN) {
             return;
         }
 
         // total qps
+        // 总共的qps
         double currentQps = Constants.ENTRY_NODE == null ? 0.0 : Constants.ENTRY_NODE.successQps();
         if (currentQps > qps) {
             throw new SystemBlockException(resourceWrapper.getName(), "qps");
         }
 
         // total thread
+        // 总共的线程数
         int currentThread = Constants.ENTRY_NODE == null ? 0 : Constants.ENTRY_NODE.curThreadNum();
         if (currentThread > maxThread) {
             throw new SystemBlockException(resourceWrapper.getName(), "thread");
         }
 
+        //rt
         double rt = Constants.ENTRY_NODE == null ? 0 : Constants.ENTRY_NODE.avgRt();
         if (rt > maxRt) {
             throw new SystemBlockException(resourceWrapper.getName(), "rt");

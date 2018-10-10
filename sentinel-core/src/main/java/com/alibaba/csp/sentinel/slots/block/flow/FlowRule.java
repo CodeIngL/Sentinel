@@ -155,20 +155,20 @@ public class FlowRule extends AbstractRule {
         String limitApp = this.getLimitApp();
 
         if (limitApp.equals(origin)) {
-            if (strategy == RuleConstant.STRATEGY_DIRECT) {
+            if (strategy == RuleConstant.STRATEGY_DIRECT) { //直接方式，使用OriginNode
                 return context.getOriginNode();
             }
 
-            String refResource = this.getRefResource();
+            String refResource = this.getRefResource(); //其他方式，需要读取规则的refResource属性
             if (StringUtil.isEmpty(refResource)) {
                 return null;
             }
 
-            if (strategy == RuleConstant.STRATEGY_RELATE) {
-                return ClusterBuilderSlot.getClusterNode(refResource);
+            if (strategy == RuleConstant.STRATEGY_RELATE) { //相关方式
+                return ClusterBuilderSlot.getClusterNode(refResource); //获得相关方式对应的ClusterNode
             }
 
-            if (strategy == RuleConstant.STRATEGY_CHAIN) {
+            if (strategy == RuleConstant.STRATEGY_CHAIN) { //链路方式
                 if (!refResource.equals(context.getName())) {
                     return null;
                 }
